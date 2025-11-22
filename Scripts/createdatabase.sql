@@ -1,1 +1,1 @@
-create database test;
+create database GB;
