@@ -1,0 +1,160 @@
+1. Install the Linux , and lets start exploring .
+    It can be installed on any machine , i have used Oracle Virtual Box as the Enc to host my Linux machine.
+    And I have installed RHEL(Red Hat Linux Enterprise). I would recommend not to use any GUI based Interface
+2. Let's start ,so lets power on the VM and start exploring , also after power on we will not use from the Virtual box , rather we will use SSH to connect 
+    to the machine , just like putty or we can use our Windows terminal (cmd) also .
+    I am Prefering to use VS code terminal window and ssh to my machine .
+3. To get the IP of our RHEL VM we will connect once to the VM after poweron , when it asks for login and password
+    and then use can use below command 
+                                <<<<<<<<<<<<<" ip a ">>>>>>>>>>>>>>>
+This command will give us the local ip and other details of the RHEL VM.
+
+            root@localhost:~# ip a
+            1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+                link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+                inet 127.0.0.1/8 scope host lo
+                valid_lft forever preferred_lft forever
+                inet6 ::1/128 scope host noprefixroute 
+                valid_lft forever preferred_lft forever
+            2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+                link/ether 08:00:27:60:7f:c3 brd ff:ff:ff:ff:ff:ff
+                altname enx080027607fc3
+                inet 192.168.29.228/24 brd 192.168.29.255 scope global dynamic noprefixroute enp0s3
+                valid_lft 85108sec preferred_lft 85108sec
+                inet6 2405:201:300e:e0e2:a00:27ff:fe60:7fc3/64 scope global dynamic noprefixroute 
+                valid_lft 3582sec preferred_lft 3582sec
+                inet6 fe80::a00:27ff:fe60:7fc3/64 scope link noprefixroute 
+                valid_lft forever preferred_lft forever
+
+
+3. Command used to SSH is ssh root@192.168.29.228 
+    root is the user i am using ,it has highest access it comes when we install the OS.
+    192.168.29.228 is the IP of my VM . after this it asks for the password and boom you are connected to you RHEL VM.
+
+                PS C:\Users\gbinodkumard\OneDrive - DXC Production\Desktop\MSSQLCTBGITREPO\MSSQLCTB> ssh root@192.168.29.228
+                root@192.168.29.228's password: 
+                Web console: https://localhost:9090/ or https://192.168.29.228:9090/
+
+                Register this system with Red Hat Insights: rhc connect
+
+                Example:
+                # rhc connect --activation-key <key> --organization <org>
+
+                The rhc client and Red Hat Insights will enable analytics and additional
+                management capabilities on your system.
+                View your connected systems at https://console.redhat.com/insights
+
+                You can learn more about how to register your system 
+                using rhc at https://red.ht/registration
+                Last login: Fri Jan  2 14:41:57 2026 from 192.168.29.238
+                root@localhost:~# 
+
+4. Now connected lets document the basic Linux commands 
+    ## FILE & DIRECTORY NAVIGATION
+            pwd            # Show current directory path
+            mkdir Test     # Create directory
+            ls             # List files and directories
+            ls -l          # Detailed file listing
+            ls -a          # Show hidden files
+            cd /path       # Change directory
+            cd ..          # Move one directory up
+            cd ~           # Go to home directory
+            tree           # Show directory structure (if installed)
+
+           -- ### Optional ### --
+            mkdir -p linux_lab/{docs,scripts,logs} # create multiple directories inside one directory
+
+    ## FILE OPERATIONS
+            touch file     # Create empty file
+            cat file       # Display file content
+            less file      # View file page by page
+            more file      # View file (basic pager)
+            cp src dst     # Copy file
+            mv src dst     # Move or rename file
+            rm file        # Delete file
+            rm -r dir      # Delete directory recursively
+            stat file      # Show file metadata
+            file file      # Show file type
+            vi file        # To edit a text File
+           vi intro.txt
+
+           WORKFLOW for editing and saving a File 
+                                1.    i
+                                2.  (type your text)
+                                3. ESC
+                                4. :wq
+                                5. ENTER
+                        Use :q! to exit without saving AND NOT USE crtl+C 
+
+    ## SEARCH & FIND
+            find / -name filename # Find file by name over all 
+            find . -name filename # Find file by name in the current directory 
+            find <where_to_search> <criteria>
+
+            locate file    # Fast search (uses index) ### Before that make sure to update database by updatedb command ###
+            grep <options> <text> <where_to_search>
+
+            grep -ri text . # Case-insensitive search in the present directory 
+            grep -ri text DirectoryName # Case-insensitive search in the that directory 
+            grep -r text . # Recursive search in present directory 
+
+                                grep -r Linux .
+                                # searches in linux_lab and below
+
+                                find . -type f
+                                # lists all files under linux_lab
+
+                                find . -type d
+                                # lists all directories
+
+    ## FILE SIZE & DISK
+            df -h          # Disk space usage
+            du -sh dir     # Directory size
+            ls -lh         # File sizes in readable form
+
+    ## MEMORY & CPU
+            free -h        # Memory usage
+            top            # Live CPU/memory usage
+            htop           # Enhanced top (if installed)
+            uptime         # System running time
+
+    ## PROCESS MANAGEMENT
+            ps -ef         # List all processes
+            ps aux         # Process snapshot
+            top            # Real-time process view
+            kill PID       # Kill process
+            kill -9 PID    # Force kill
+            pkill name     # Kill by process name
+
+    ## NETWORKING
+            ip a            # Show IP addresses
+            ip r            # Show routing table
+            ping host       # Test connectivity
+            ss -tulpn       # Listening ports
+            netstat -tulpn  # Legacy port view
+            hostname        # Show hostname
+            hostnamectl    # Host/system info
+
+    ## USERS & PERMISSIONS
+            whoami          # Current user
+            id              # User and group IDs
+            who              # Logged-in users
+            groups          # User groups
+            chmod 755 file  # Change permissions
+            chown user file # Change file owner
+
+    ## FILE REDIRECTION & PIPE (VERY IMPORTANT)
+            cmd > file       # Output to file
+            cmd >> file      # Append output
+            cmd < file       # Input from file
+            cmd1 | cmd2      # Pipe output
+
+     ## LOGS & TROUBLESHOOTING
+        journalctl           # System logs
+        journalctl -xe       # Error logs
+        journalctl -u svc    # Service-specific logs
+        dmesg                # Kernel messages
+
+     ## OS-VERSION 
+        cat /etc/os-release  # Version of the OS
+        uname -r             # Display Kernel Version
